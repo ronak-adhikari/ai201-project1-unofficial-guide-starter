@@ -9,7 +9,12 @@
 
 ## Domain
 
-<!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
+<!-- Student reviews of CSULB professors in the Computer Science and Finance 
+departments, sourced from Rate My Professors. This knowledge is valuable 
+because it captures firsthand insight — grading style, workload, exam 
+format, professor accessibility — that never appears in official course 
+catalogs. It is otherwise scattered across hundreds of individual reviews 
+with no way to ask cross-cutting questions. -->
 
 ---
 
@@ -20,16 +25,16 @@
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | Rate My Professors | Susan Nachawati — CS | https://www.ratemyprofessors.com/professor/115586 |
+| 2 | Rate My Professors | Ali Sharifian — CS | https://www.ratemyprofessors.com/professor/2300819 |
+| 3 | Rate My Professors | Alireza Mehrnia — CS | https://www.ratemyprofessors.com/professor/2521315 |
+| 4 | Rate My Professors | Jelena Trajkovic — CS | https://www.ratemyprofessors.com/professor/2493982 |
+| 5 | Rate My Professors | Shannon Cleary — CS | https://www.ratemyprofessors.com/professor/1287692 |
+| 6 | Rate My Professors | Chant Phengpis — Finance | https://www.ratemyprofessors.com/professor/934194 |
+| 7 | Rate My Professors | Xiaoying (Cindy) Chen — Finance | https://www.ratemyprofessors.com/professor/917849 |
+| 8 | Rate My Professors | Frank McEnulty — Finance | https://www.ratemyprofessors.com/professor/2088803 |
+| 9 | Rate My Professors | Wikrom Prombutr — Finance | https://www.ratemyprofessors.com/professor/1781246 |
+| 10 | Rate My Professors | Aslihan Salih — Finance | https://www.ratemyprofessors.com/professor/2626180 |
 
 ---
 
