@@ -45,11 +45,11 @@ with no way to ask cross-cutting questions. -->
      numbers fit the structure of your documents.
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
-**Chunk size:**
+**Chunk size:** 300 characters
 
-**Overlap:**
+**Overlap:** 50 characters 
 
-**Reasoning:**
+**Reasoning:** Rate My Professor reviews range from 1-2 sentences to a short paragraph, with most falling between 2-4 sentences. A 300-character chunk captures roughly one complete review or one meaningful thought without pulling in unrelated content from adjacent reviews. A 50-character overlap ensures that reviews are split across a chunk boundry still have enough shared context to be retrivable. Chinks that are too small risk being too vagure to ansewer any specific question; chucks that are too large risk burying a simple answer inside irrelevant text. Very short reviews (1-2) words will produce low-quality chunks.
 
 ---
 
@@ -61,11 +61,11 @@ with no way to ask cross-cutting questions. -->
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:**
+**Embedding model:** all-MiniLM-L6-v2
 
-**Top-k:**
+**Top-k:** 5
 
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** all-MiniLM-L6-v2 runs locally with no API cost and handles English text pretty well, which makes it a strong chouce for this project. In a real production system I would weigh seveal tradeoffs: context length limits (this model is fine for short reviews but would trucate longer documents), multilingual support, domain-sepcific accuracy, and latency (local models avoid network round trips but are slower on machines without a GPU). An API-hosted model from a different company could offer better accuracy at the cost of per-request pricing and data leaving the local machine.
 
 ---
 
@@ -76,13 +76,15 @@ with no way to ask cross-cutting questions. -->
      is right or wrong. "What are good dining halls?" is too vague.
      "What do students say about wait times at [dining hall name] during lunch?" is testable. -->
 
-| # | Question | Expected answer |
+## Evaluation Plan
+
+| # | Question | Expected Answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | What do students say about Professor Nachawati's organization? | Mixed reviews — most say her lectures and class format feel disorganized, though students note she herself is not an disorganized person. The disorganization is in the class structure rather than her personality. |
+| 2 | How are Professor Xiaoying (Cindy) Chen's exams and what are they based on? | Exams are hard and include conceptual questions pulled from homework and math-based questions pulled from quizzes. Students find the questions difficult to learn despite being drawn from familiar material. |
+| 3 | What is Professor Prombutr's overall class structure like? | Class consists of 4 exams with the lowest dropped from the final grade. No graded homework is assigned and exams are multiple choice and considered straightforward. |
+| 4 | What do students say about Professor Sharifian's lectures and exams? | Lectures are well structured and easy to follow though some find them outdated. Overall considered pretty straightforward. |
+| 5 | Which CS professor is most recommended for students taking a class for the first time? | Professor Jelena Trajkovic is highly recommended for first time students based on very positive reviews, good class structure, and a history of teaching entry level courses. |
 
 ---
 
@@ -92,9 +94,9 @@ with no way to ask cross-cutting questions. -->
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. The embedding model may retrieve chunks that share similar words or topics with the query mbut don't contain the speific information the expected answer is based on.
 
-2.
+2. Rate My Proffesor reviews that are 1-2 words in length or a single vague sentence don't contain enough context for the embedding model to produce a meaningful vector. These chunks may never be retrieved for relevant queries, amking those reviews effectivly invisible to the system. This could cause the system to miss signals expecially where every review matters for professors with less reviews overall. 
 
 ---
 
@@ -105,6 +107,27 @@ with no way to ask cross-cutting questions. -->
      Label each stage with the tool or library you're using.
      You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
      You'll use this diagram as context when prompting AI tools to implement each stage. -->
+     
+Document Ingestion     Chunking              Embedding + Vector Store
+──────────────────     ────────────────      ────────────────────────
+RMP review text   →    300 char chunks   →   all-MiniLM-L6-v2
+(plain .txt files)     50 char overlap        sentence-transformers
+                                              stored in ChromaDB
+                                                      │
+                                                      ▼
+                                              Retrieval (top-k=5)
+                                              ──────────────────
+                                              semantic similarity
+                                              search via ChromaDB
+                                                      │
+                                                      ▼
+                                              Generation
+                                              ──────────
+                                              Groq LLM
+                                              llama-3.3-70b-versatile
+                                              grounded response
+                                              with source citation  
+  
 
 ---
 
@@ -121,7 +144,12 @@ with no way to ask cross-cutting questions. -->
      with my specified chunk size and overlap" is a plan. -->
 
 **Milestone 3 — Ingestion and chunking:**
+Ingestion and chunking:** I will give Claude the Chunking 
+Strategy section of this planning.md and ask it to implement a chunk_text() function that splits text using a chunk size of 300 characters and overlap of 50 characters. I will verify the output by printing sample chunks and confirming they match the expected size and overlap.
 
 **Milestone 4 — Embedding and retrieval:**
+I will give Claude the Retrieval 
+Approach section of this planning.md and ask it to implement the embedding and ChromaDB storage pipeline using all-MiniLM-L6-v2. I will verify by querying the vector store manually and checking that returned chunks are relevant to the query.
 
 **Milestone 5 — Generation and interface:**
+I will give Claude the full planning.md and ask it to implement the Groq LLM generation step with a system prompt that enforces grounding. I will verify by running my 5 evaluation questions and checking responses against my expected answers.
